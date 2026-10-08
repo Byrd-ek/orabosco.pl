@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Oratorium Świętego Jana bosco Lubin</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="loading">
+
+    <div id="loader-wrapper">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">ŁADOWANIE...</div>
+    </div>
+
+    <div id="album-modal">
+        <div class="album-header">
+            <h2 class="album-title">NASZA GALERIA</h2>
+            <button class="album-close-btn" onclick="zamknijAlbum()">ZAMKNIJ (X)</button>
+        </div>
+        <div class="album-grid-content" id="album-grid"></div>
+    </div>
+
+    <div id="lightbox">
+        <div id="lightbox-touch-area"></div>
+        <span class="lightbox-close" onclick="zamknijGalerie()">&times;</span>
+        <span class="lightbox-prev" onclick="zmienZdjecie(-1)">&#10094;</span>
+        <span class="lightbox-next" onclick="zmienZdjecie(1)">&#10095;</span>
+        <img id="lightbox-img" src="" alt="Powiększone zdjęcie">
+        <div id="lightbox-counter" class="marker-font">1 / 10</div>
+    </div>
+
+    <div id="admin-panel-modal">
+        <div class="admin-modal-card">
+            <div class="admin-header">
+                <div>
+                    <h2 class="admin-title">PANEL ZARZĄDZANIA</h2>
+                    <span class="badge black">ORATORIUM ŚW. JANA BOSCO • LUBIN</span>
+                </div>
+                <button class="admin-close-btn" onclick="zamknijAdminPanel()">ZAMKNIJ (X)</button>
+            </div>
+
+            <h3 style="font-size: 1.5rem; margin-bottom: 12px;">STATYSTYKI ODWIEDZIN</h3>
+            <div class="admin-stats-grid">
+                <div class="stat-box">
+                    <h4>ŁĄCZNIE ODWIEDZIN</h4>
+                    <div class="stat-number" id="adm-stat-total">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>ODWIEDZINY DZISIAJ</h4>
+                    <div class="stat-number" id="adm-stat-today">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>W TYM MIESIĄCU</h4>
+                    <div class="stat-number" id="adm-stat-month">0</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h4 style="font-size: 1.1rem; margin-bottom: 10px; color: #ffeb3b;">WYKRES ODWIEDZIN W MIESIĄCU (DNI 1 - 31)</h4>
+                <div class="chart-bars-wrap" id="chart-bars-container"></div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                <h3 style="font-size: 1.6rem;">EDYCJA: TRZY KAFELKI „ORATORIUM TERAZ”</h3>
+                <span style="font-size: 0.9rem; color: #555;">(Zapisuje się i aktualizuje automatycznie u każdego)</span>
+            </div>
+            <div class="admin-cards-editor" id="admin-cards-form-container"></div>
+
+            <div class="admin-actions-bar">
+                <button class="btn-admin-sec" style="color:var(--main-red);" onclick="resetujDoDomyslnych()">PRZYWRÓĆ DOMYŚLNE</button>
+                <button class="btn-admin-save" id="btn-save-main" onclick="zapiszIZastosujGlobalnie()">ZAPISZ I OPUBLIKUJ DLA WSZYSTKICH</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="board-wrapper">
+
+        <header class="board-top-bar">
+            <a href="#" class="top-brand" onclick="zmienZakladke('glowna'); zamknijWszystkieDropdowny();">
+                <img src="logo.png" alt="Oratorium Świętego Jana Bosco" onerror="this.style.display='none'">
+            </a>
+
+            <div class="top-bar-right-wrap">
+                <div class="top-bar-photo">
+                    <img src="oratorium-lubin.png" alt="Oratorium Lubin">
+                </div>
+
+                <nav class="top-nav">
+                    <div class="nav-category">
+                        <button class="nav-category-btn" onclick="toggleDropdown(this)">
+                            GŁÓWNE <span class="nav-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#o-nas" onclick="zmienZakladke('glowna'); zamknijWszystkieDropdowny();">O NAS</a>
+                            <a href="#oratorium-teraz-section" onclick="zmienZakladke('glowna'); zamknijWszystkieDropdowny();">ORATORIUM TERAZ</a>
+                            <a href="#lokalizacja" onclick="zmienZakladke('glowna'); zamknijWszystkieDropdowny();">LOKALIZACJA</a>
+                            <a href="#kontakt" onclick="zmienZakladke('glowna'); zamknijWszystkieDropdowny();">KONTAKT</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-category">
+                        <button class="nav-category-btn" onclick="toggleDropdown(this)">
+                            PLANY <span class="nav-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#zakladka-plany" onclick="zmienZakladke('plany'); zamknijWszystkieDropdowny();">PLANY</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-category">
+                        <button class="nav-category-btn" onclick="toggleDropdown(this)">
+                            MEDIA <span class="nav-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#zakladka-media" onclick="zmienZakladke('media'); zamknijWszystkieDropdowny();">NASZE MEDIA</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-category">
+                        <button class="nav-category-btn" onclick="toggleDropdown(this)">
+                            TEST <span class="nav-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                            <a href="#" onclick="event.preventDefault()">TEST</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div class="hero-banner-card">
+            <div>
+                <div class="badge black">LUBIN • DOM KS. BOSKO</div>
+                <h1 class="hero-banner-title">
+                    ORATORIUM
+                    <span class="red">ŚW. JANA BOSCO</span>
+                </h1>
+                <span class="hero-script-tag">w Lubinie</span>
+                <p style="font-weight: 300; max-width: 550px;">
+                    Test test test test test test test test test test. Test test test test test test. Test test test test test test test.
+                </p>
+                <div class="hero-social-row">
+                    <a href="https://www.tiktok.com/@oratoriumboscolubin" target="_blank">TIKTOK</a>
+                    <a href="https://www.instagram.com/oraboskolubin/" target="_blank">INSTAGRAM</a>
+                    <a href="https://www.facebook.com/janboskolubin?locale=pl_PL" target="_blank">FACEBOOK</a>
+                    <a href="https://www.youtube.com/@OratoriumJanaBoscoLubin" target="_blank">YOUTUBE</a>
+                </div>
+            </div>
+
+            <div class="hero-photos-grid">
+                <div class="photo-box" onclick="otworzAlbum()">
+                    <img id="losowe-zdj-1" src="" alt="Zdjęcie z Oratorium">
+                </div>
+                <div class="photo-box" onclick="otworzAlbum()">
+                    <img id="losowe-zdj-2" src="" alt="Zdjęcie z Oratorium">
+                    <div class="more-photos-overlay">
+                        <span id="licznik-zdjec">+8</span>
+                        <small>GALERIA</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="zakladka-glowna">
+            <div class="box" id="o-nas" style="margin-bottom: 25px;">
+                <div class="box-border">
+                    <div class="box-bg">
+                        <div class="box-header-strip">
+                            <h3>O NAS</h3>
+                            <div class="badge" style="margin-bottom:0; padding:2px 8px; font-size:0.75rem;">INFORMACJE</div>
+                        </div>
+                        <div class="box-content">
+                            <h3>TEST TEST</h3>
+                            <p>Test test test test test test test test test test. Test test test test test test. Test test test test test test test.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+            </div>
+
+            <div id="oratorium-teraz-section">
+                <div class="board-grid-3" id="oratorium-teraz-container" style="margin-bottom: 30px;"></div>
+            </div>
+
+            <div class="box" id="lokalizacja" style="margin-bottom: 25px;">
+                <div class="box-border">
+                    <div class="box-bg">
+                        <div class="box-header-strip">
+                            <h3>LOKALIZACJA</h3>
+                            <span style="font-size:1.05rem; font-family:'Oswald';">Jana Pawła II 51, 59-300 Lubin</span>
+                        </div>
+                        <div class="box-content" style="padding: 24px;">
+                            <h3 style="margin-bottom: 6px;">Jana Pawła II 51, 59-300 Lubin</h3>
+                            <p style="margin-bottom: 0;">Test test test test test test test test test test.</p>
+                            
+                            <div class="map-wrapper-large">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1720.9897402323656!2d16.185054016741486!3d51.40093969750643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470f6f0063d16daf%3A0x3fb24d66dbc903b3!2sOratorium%20%C5%9Aw.%20Jana%20bosco%20w%20Lubinie!5e1!3m2!1spl!2spl!4v1789763438209!5m2!1spl!2spl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+            </div>
+
+            <div class="box" id="kontakt">
+                <div class="box-border">
+                    <div class="box-bg">
+                        <div class="box-header-strip">
+                            <h3>KONTAKT</h3>
+                            <div class="badge" style="margin-bottom:0; padding:2px 8px; font-size:0.75rem;">KONTAKT</div>
+                        </div>
+                        <div class="box-content">
+                            <p><strong>ADRES:</strong> Jana Pawła II 51, 59-300 Lubin</p>
+                            <p><strong>TEST:</strong> test test test</p>
+                            <p><strong>TEST:</strong> test test test</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+            </div>
+        </div>
+
+        <div id="zakladka-plany">
+            <h2 class="section-title">PLANY</h2>
+            <div class="board-grid-2">
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip">
+                                <h3>PLAN 1</h3>
+                                <div class="badge" style="margin-bottom:0; padding:2px 8px; font-size:0.75rem;">PLIK</div>
+                            </div>
+                            <div class="box-content">
+                                <h3>PLAN 1</h3>
+                                <p>Test test test test test test test.</p>
+                                <a href="plan1.pdf" class="btn-download" download>POBIERZ PLAN 1</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip">
+                                <h3>PLAN 2</h3>
+                                <div class="badge" style="margin-bottom:0; padding:2px 8px; font-size:0.75rem;">PLIK</div>
+                            </div>
+                            <div class="box-content">
+                                <h3>PLAN 2</h3>
+                                <p>Test test test test test test test.</p>
+                                <a href="plan2.pdf" class="btn-download" download>POBIERZ PLAN 2</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="zakladka-media">
+            <h2 class="section-title">NASZE MEDIA</h2>
+            <div class="board-grid-2" style="margin-bottom: 35px;">
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip">
+                                <h3>TIKTOK</h3>
+                            </div>
+                            <div class="box-content">
+                                <h3>TIKTOK</h3>
+                                <p>Test test test test test test test.</p>
+                                <a href="https://www.tiktok.com/@oratoriumboscolubin" class="btn-download" target="_blank">PRZEJDŹ DO TIKTOKA</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip">
+                                <h3>YOUTUBE</h3>
+                            </div>
+                            <div class="box-content">
+                                <h3>YOUTUBE</h3>
+                                <p>Test test test test test test test.</p>
+                                <a href="https://www.youtube.com/@OratoriumJanaBoscoLubin" class="btn-download" target="_blank">PRZEJDŹ DO YOUTUBE</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip">
+                                <h3>FACEBOOK</h3>
+                            </div>
+                            <div class="box-content">
+                                <h3>FACEBOOK</h3>
+                                <p>Test test test test test test test.</p>
+                                <a href="https://www.facebook.com/janboskolubin?locale=pl_PL" class="btn-download" target="_blank">PRZEJDŹ NA FACEBOOKA</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip">
+                                <h3>INSTAGRAM</h3>
+                            </div>
+                            <div class="box-content">
+                                <h3>INSTAGRAM</h3>
+                                <p>Test test test test test test test.</p>
+                                <a href="https://www.instagram.com/oraboskolubin/" class="btn-download" target="_blank">PRZEJDŹ NA INSTAGRAM</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece secret-target-corner" style="cursor: pointer;">
+                        <div class="broken-piece-inner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="transform: rotate(-2deg);">OSTATNI POST!</h2>
+            <div class="grid-embeds">
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip"><h3>TIKTOK</h3></div>
+                            <div class="box-content">
+                                <div class="embed-wrapper">
+                                    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@oratoriumboscolubin/video/7679868694159199521" data-video-id="7679868694159199521"> <section> <a target="_blank" title="@oratoriumboscolubin" href="https://www.tiktok.com/@oratoriumboscolubin?refer=embed">@oratoriumboscolubin</a> </section> </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="sticker marker-font">NIE DZIAŁA NA CHWILE =(</div>
+                            <div class="box-header-strip"><h3>YOUTUBE</h3></div>
+                            <div class="box-content">
+                                <div class="embed-wrapper">
+                                    <div class="youtube-wrapper">
+                                        <iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip"><h3>FACEBOOK</h3></div>
+                            <div class="box-content">
+                                <div class="embed-wrapper">
+                                    <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fjanboskolubin%2Fposts%2Fpfbid0364jpiv1F2nRuYZZ7zFqeiWhVXqAmvMbab2Vhg6JPJ8NfuiqpouL5odqATeuPnjmBl&show_text=true&width=500" width="100%" height="560" style="border:none;overflow:hidden; max-width: 500px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece"><div class="broken-piece-inner"></div></div>
+                </div>
+
+                <div class="box">
+                    <div class="box-border">
+                        <div class="box-bg">
+                            <div class="box-header-strip"><h3>INSTAGRAM</h3></div>
+                            <div class="box-content">
+                                <div class="embed-wrapper">
+                                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/CuCQaowtLEq/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"><div style="padding:16px;"> <a href="https://www.instagram.com/p/CuCQaowtLEq/?utm_source=ig_embed&amp;utm_campaign=loading" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank">Post na Instagramie</a></div></blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="broken-piece secret-target-corner" style="cursor: pointer;">
+                        <div class="broken-piece-inner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script async src="//www.instagram.com/embed.js"></script>
+    <script async src="https://www.tiktok.com/embed.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+index.html (Treść strony)
+1 – 12 → Nagłówek <head>: kodowanie, viewport, tytuł, fonty Google i podpięcie style.css
+15 – 18 → Loader (animowane kółko i tekst ładowania)
+20 – 26 → Modal z pełną galerią (siatka wszystkich zdjęć)
+28 – 35 → Lightbox (powiększone pojedyncze zdjęcie, strzałki nawigacji i licznik)
+37 – 78 → Panel Administratora (okno statystyk, wykres odwiedzin, formularz edycji kafelków i przyciski zapisu)
+82 – 150 → Górne menu i nawigacja (logo, kategorie i rozwijane listy dropdown)
+152 – 182 → Główny baner (duży tytuł, opis, linki do sociali oraz 2 losowe miniaturki galerii z nakładką „+8”)
+184 – 227 → Zakładka GŁÓWNA (sekcja „O nas”, miejsce na 3 dynamiczne kafelki „Oratorium Teraz”, mapa Google i kontakt)
+229 – 263 → Zakładka PLANY (kafelki z przyciskami do pobierania plików PDF)
+265 – 349 → Zakładka MEDIA (przyciski do portali, ukryty róg w Instagramie oraz osadzone posty/embedy z TikToka, YouTube, Facebooka i Instagrama)
+353 – 357 → Podpięcie skryptów (script.js + zewnętrzne biblioteki TikToka i Instagrama)
+style.css (Wygląd i style)
+1 – 7 → Główne kolory strony (zmienne CSS: czerwień, czerń, żółty, tła)
+9 – 28 → Reset stylów, płynne przewijanie i własny czerwono-czarny pasek scrollbara
+30 – 45 → Fonty nagłówków i tekstu (Anton, Oswald, Permanent Marker)
+47 – 69 → Wygląd i animacje obracania loadera
+71 – 75 → Główny kontener centrujący stronę (board-wrapper)
+77 – 146 → Styl paska menu, przycisków i animowanych list rozwijanych
+148 – 240 → Baner powitalny (hero), linki społecznościowe i miniaturki zdjęć z nakładką
+242 – 364 → Kanciaste boxy z uciętym rogiem (clip-path), paski tytułowe, naklejki, etykiety (badge) i przyciski pobierania
+366 – 418 → Układy kolumn (siatka na 3 i 2 kafelki, osadzone wideo i responsywna mapa)
+420 – 422 → Ukrywanie nieaktywnych zakładek
+424 – 501 → Wygląd galerii i powiększonego podglądu (lightbox, strzałki, zamykanie)
+503 – 656 → Wygląd panelu admina (tabela statystyk, słupki wykresu, formularz edycji, wybieraki kolorów)
+658 – 673 → Wersja na telefony i tablety (@media)
+script.js (Logika i działanie)
+1 → Adres API chmury do synchronizacji danych
+3 – 48 → Domyślna treść 3 kafelków i odczyt z pamięci podręcznej (localStorage)
+50 – 71 → Zliczanie unikalnych wizyt na stronie (rejestrujWizyte)
+73 – 85 → Obliczanie statystyk (dzisiaj, w miesiącu, łącznie)
+87 – 117 → Rysowanie wykresu słupkowego dni miesiąca
+119 – 148 → Generowanie i wstawianie 3 kafelków do strony głównej (renderujKafelkiTeraz)
+150 – 227 → Tworzenie formularza w panelu admina i palety kolorów
+229 – 238 → Funkcja przypisująca gotową paletę barw
+240 – 286 → Zapis zmian i wysyłanie ich do chmury dla wszystkich użytkowników
+288 – 304 → Pobieranie aktualnych kafelków z chmury przy wejściu na stronę
+306 – 313 → Przycisk resetu do domyślnych ustawień
+315 – 325 → Zabezpieczenie: funkcja sprawdzająca poprawność hasła admina
+327 – 357 → Obsługa ukrytego rogu (wymóg: 10 kliknięć w ciągu 20 sekund)
+359 – 373 → Otwieranie i zamykanie panelu admina
+375 – 389 → Otwieranie i zamykanie rozwijanych menu dropdown
+391 – 425 → Losowanie 2 zdjęć do banera i budowanie kafelków w galerii
+427 – 455 → Otwieranie, zamykanie i zmiana powiększonych zdjęć w galerii
+457 – 466 → Sterowanie klawiaturą (zamykanie przez Escape, przewijanie strzałkami)
+468 – 478 → Przesuwanie zdjęć gestem palca (swipe) na telefonie
+480 – 498 → Przełączanie między podstronami/zakładkami (Główna, Plany, Media)
+500 – 511 → Uruchomienie skryptów po załadowaniu strony i ukrycie loadera
